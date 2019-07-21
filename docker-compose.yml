@@ -19,18 +19,6 @@ services:
     volumes:
       - 'redis:/data'
 
-  sidekiq:
-    depends_on:
-      - db
-      - redis
-      - elasticsearch
-    build: .
-    command: bundle exec sidekiq -C config/sidekiq.yml
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-
   app:
     depends_on:
       - 'db'
@@ -48,6 +36,19 @@ services:
     tty: true
     environment:
       - ES_HOST=elasticsearch
+
+
+  sidekiq:
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - .:/app
+    env_file:
+      - .env
 
 volumes:
   redis:
