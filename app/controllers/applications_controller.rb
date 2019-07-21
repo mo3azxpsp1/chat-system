@@ -21,7 +21,7 @@ class ApplicationsController < ApplicationController
     if @application.present?
       json_response(@application)
     else
-      json_response({message: 'Not found'})
+      json_response({message: 'Not found'}, 404)
     end
   end
 

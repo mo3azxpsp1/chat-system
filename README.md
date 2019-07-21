@@ -1,24 +1,23 @@
-# README
+# Chat System APIs
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Rquirements
+`docker` and `docker-compose`
 
-Things you may want to cover:
+## Dependencies
+- Ruby 2.5.1
+- Rails 5.2.3
+- Mysql 5.7.19
+- Elasticsearch 5.0.1
+- Redis 3.3.5
+- Sidekiq 4.2.10
 
-* Ruby version
+## Steps
 
-* System dependencies
+- Clone the repo
+- Rename `database.sample.yml` file to be `database.yml`
+- Run `docker-compose up` in the terminal and you're up
+- APIs can be accessed from localhost on port 3000
+- Sidekiq admin UI can be accessed on `localhost:3000/queue`
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Endpoints
+Use this [collection] (https://www.getpostman.com/collections/cb1e1f24575fc7d46560) to test the API endpoints using Postman

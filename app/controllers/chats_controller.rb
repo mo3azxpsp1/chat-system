@@ -18,7 +18,11 @@ class ChatsController < ApplicationController
 
   # GET /applications/:application_token/chats/:number
   def show
-    json_response(@chat)
+    if @chat.present?
+      json_response(@chat)
+    else
+      json_response({message: 'Not found'}, 404)
+    end
   end
 
   # DELETE /applications/:application_token/chats/:number

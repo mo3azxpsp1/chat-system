@@ -17,9 +17,13 @@ class MessagesController < ApplicationController
   def create
     message = @chat.messages.new(message_params)
     message.number = (@chat.messages.maximum(:number)).to_i + 1
-    message.number += 1 until message.valid?(:new)
-    MessageCreateWorker.perform_async(message.number, @chat.id, params[:body])
-    json_response({message_number: message.number}, :created)
+    if message.valid?
+      message.number += 1 until message.valid?(:new)
+      MessageCreateWorker.perform_async(message.number, @chat.id, params[:body])
+      json_response({message_number: message.number}, :created)
+    else
+      json_response({error: message.errors.messages})
+    end
   end
 
   # GET /applications/:application_token/chats/:chat_number/messages/:number
@@ -27,7 +31,7 @@ class MessagesController < ApplicationController
     if @message.present?
       json_response(@message)
     else
-      json_response({message: 'Not found'})
+      json_response({message: 'Not found'}, 404)
     end
   end
 
