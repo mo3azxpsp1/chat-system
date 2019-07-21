@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5.7.19
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - ./db-data:/var/lib/mysql
+
+  elasticsearch:
+    image: elasticsearch:5.0.1
+
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - 6379
+    volumes:
+      - 'redis:/data'
+
+  sidekiq:
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
+  app:
+    depends_on:
+      - 'db'
+      - 'redis'
+      - 'elasticsearch'
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle i && rake db:create db:migrate db:seed && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    env_file:
+      - '.env'
+    stdin_open: true
+    tty: true
+    environment:
+      - ES_HOST=elasticsearch
+
+volumes:
+  redis:
+  db:
