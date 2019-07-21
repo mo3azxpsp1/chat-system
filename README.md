@@ -20,4 +20,4 @@
 - Sidekiq admin UI can be accessed on `localhost:3000/queue`
 
 ## Endpoints
-Use this [collection] (https://www.getpostman.com/collections/cb1e1f24575fc7d46560) to test the API endpoints using Postman
+Use this [collection](https://www.getpostman.com/collections/cb1e1f24575fc7d46560) to test the API endpoints using Postman
