@@ -27,3 +27,5 @@
 
 # Config files
 /config/database.yml
+
+.env
