@@ -29,13 +29,14 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+gem 'elasticsearch-model', '~> 5.0.1'
+gem 'elasticsearch-rails', '~> 5.0.1'
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
-  gem 'elasticsearch-model', '~> 5.0.1'
-  gem 'elasticsearch-rails', '~> 5.0.1'
-  gem 'sidekiq'
 end
 
 group :development do
@@ -44,7 +45,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop', require: false
- 
 end
 
 group :test do
@@ -52,6 +52,7 @@ group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'faker'
   gem 'database_cleaner'
+  gem 'rspec-sidekiq'
 end
 
 

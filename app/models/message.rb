@@ -4,12 +4,12 @@ class Message < ApplicationRecord
 
   belongs_to :chat, inverse_of: :messages, counter_cache: true
 
-  validates_presence_of :body
+  validates_presence_of :body, :number
 
   validates :number, uniqueness: { scope: :chat_id, message: "number should be unique per chat" }, on: :new
 
-  after_save  { Indexer.perform_async(:index,  self.id) } # index records asynchronously
-  after_destroy { Indexer.perform_async(:delete, self.id) } # delete indexed records asynchronously
+  after_save :index_message # index records asynchronously
+  after_destroy :unindex_message # delete indexed records asynchronously
 
 
   # better to be separated in searchable module if we would include elasticseach in other models
@@ -30,6 +30,14 @@ class Message < ApplicationRecord
         }
       }
     ).records
+  end
+
+  def index_message
+    Indexer.perform_async(:index, id)
+  end
+
+  def unindex_message
+    Indexer.perform_async(:delete, id)
   end
 
 end

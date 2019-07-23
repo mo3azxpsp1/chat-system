@@ -18,27 +18,25 @@ class ChatsController < ApplicationController
 
   # GET /applications/:application_token/chats/:number
   def show
-    if @chat.present?
-      json_response(@chat)
-    else
-      json_response({message: 'Not found'}, 404)
-    end
+    json_response(@chat)
   end
 
   # DELETE /applications/:application_token/chats/:number
   def destroy
     @chat.destroy
-    json_response({message: 'Chat deleted successfully!'}, :deleted)
+    json_response({message: 'Chat deleted successfully!'})
   end
 
   private
 
   def set_application
-    @application = Application.find_by_token(params[:application_id])
+    @application = Application.includes(:chats).find_by_token(params[:application_id])
+    return json_response({error: 'Application not found'}, 404) unless @application.present?
   end
 
   def set_application_chat
     @chat = @application.chats.find_by_number(params[:id]) if @application.present?
+    return json_response({error: 'Not found'}, 404) unless @chat.present?
   end
 
 end

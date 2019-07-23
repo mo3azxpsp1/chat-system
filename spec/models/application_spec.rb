@@ -13,24 +13,24 @@ RSpec.describe Application, type: :model do
 
   # Association test
   # ensure Application model has a 1:m relationship with the Chat model
-  it { should have_many(:chats).dependent(:destroy).inverse_of(:application) }
+  it { expect have_many(:chats).dependent(:destroy).inverse_of(:application) }
 
   # Validation tests
   # ensure columns name and token are present and unique before saving
   describe "presence" do
-    it { should validate_presence_of(:name) }
+    it { expect validate_presence_of(:name) }
     it do
       allow_any_instance_of(Application).to receive(:generate_token)
-      should validate_presence_of(:token)
+      expect validate_presence_of(:token)
     end
   end
 
   describe "uniqueness" do
     subject { Application.new(name: "something", token: "something else") }
-    it { should validate_uniqueness_of(:name) }
+    it { expect validate_uniqueness_of(:name) }
     it do
       allow_any_instance_of(Application).to receive(:generate_token)
-      should validate_uniqueness_of(:token)
+      expect validate_uniqueness_of(:token)
     end
   end
 end

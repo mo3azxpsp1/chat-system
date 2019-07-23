@@ -12,12 +12,12 @@
 - Sidekiq 4.2.10
 
 ## Steps
-
 - Clone the repo
 - Rename `database.sample.yml` file to be `database.yml`
-- Run `docker-compose up` in the terminal and you're up
+- Run `docker-compose up` in the terminal and you're ready to go (hopefully:)
 - APIs can be accessed from localhost on port 3000
 - Sidekiq admin UI can be accessed on `localhost:3000/queue`
+- Execute `docker-compose run app rspec` to run the unit tests
 
 ## Endpoints
 Use this [collection](https://www.getpostman.com/collections/cb1e1f24575fc7d46560) to test the API endpoints using Postman

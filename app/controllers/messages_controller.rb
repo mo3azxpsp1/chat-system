@@ -22,29 +22,25 @@ class MessagesController < ApplicationController
       MessageCreateWorker.perform_async(message.number, @chat.id, params[:body])
       json_response({message_number: message.number}, :created)
     else
-      json_response({error: message.errors.messages})
+      json_response({errors: message.errors.full_messages}, 422)
     end
   end
 
   # GET /applications/:application_token/chats/:chat_number/messages/:number
   def show
-    if @message.present?
-      json_response(@message)
-    else
-      json_response({message: 'Not found'}, 404)
-    end
+    json_response(@message)
   end
 
   # PUT /applications/:application_token/chats/:chat_number/messages/:number
   def update
     @message.update(message_params)
-    json_response(@message, :updated)
+    json_response(@message)
   end
 
   # DELETE /applications/:application_token/chats/:chat_number/messages/:number
   def destroy
     @message.destroy
-    json_response({message: 'Message deleted successfully!'}, :deleted)
+    json_response({message: 'Message deleted successfully!'})
   end
 
   private
@@ -55,13 +51,16 @@ class MessagesController < ApplicationController
 
   def set_application
     @application = Application.find_by_token(params[:application_id])
+    return json_response({error: 'Application not found'}, 404) unless @application.present?
   end
 
   def set_application_chat
-    @chat = @application.chats.find_by_number(params[:chat_id]) if @application.present?
+    @chat = @application.chats.includes(:messages).find_by_number(params[:chat_id]) if @application.present?
+    return json_response({error: 'Chat not found'}, 404) unless @chat.present?
   end
 
   def set_chat_message
     @message = @chat.messages.find_by_number(params[:id]) if @chat.present?
+    return json_response({message: 'Not found'}, 404) unless @message.present?
   end
 end
