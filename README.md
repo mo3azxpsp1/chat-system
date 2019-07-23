@@ -13,7 +13,7 @@
 
 ## Steps
 - Clone the repo
-- Rename `database.sample.yml` file to be `database.yml`
+- Rename `database.sample.yml` file to be `database.yml` & `.env.sample` to `.env`
 - Run `docker-compose up` in the terminal and you're ready to go (hopefully:)
 - APIs can be accessed from localhost on port 3000
 - Sidekiq admin UI can be accessed on `localhost:3000/queue`
